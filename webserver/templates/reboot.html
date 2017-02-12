@@ -1,0 +1,27 @@
+$def with (title,link)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>$title</title>
+ <link rel="stylesheet" type="text/css" href="/static/main.css">
+<link href="/static/bootstrap.css" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span4">
+      
+      </div>
+    <div class="content">
+    <div class="span8">
+        <img src="/static/merg_logo.png" />      
+        <header><h3>$title<br/></h3></header>
+        <a href=$link>Click here to go back to config page</a>    
+        <header><h4>When changing from wifi mode to ap mode, remember to reconnect the smartphone<br/></h4></header>
+    </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

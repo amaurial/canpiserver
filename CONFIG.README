@@ -1,0 +1,116 @@
+######## Setting CAN to to work on Pi ########
+
+(http://skpang.co.uk/blog/archives/1165):
+
+Use raspi-config to set the SPI drivers.
+
+Add the overlays by:
+
+sudo nano /boot/config.txt
+Add these 3 lines to the end of file:
+
+dtparam=spi=on
+dtoverlay=mcp2515-can0-overlay,oscillator=16000000,interrupt=25
+dtoverlay=spi-bcm2835-overlay
+
+Then reboot and
+sudo /sbin/ip link set can0 up type can bitrate 125000
+
+
+Interface configuration
+Add the entry bellow in /etc/network/interfaces
+
+#from here
+auto can0
+iface can0 can static
+      bitrate 125000 restart-ms 1000
+#to here
+
+######### Virtual CAN for test #######
+
+sudo modprobe vcan
+sudo ip link add dev vcan0 type vcan
+sudo ip link set up vcan0
+
+######## Canpi automatic start #######
+
+edit the file start_canpi.sh and modify the line
+dir="/home/pi/canpi"
+
+and put the path of your canpi
+
+then
+sudo cp start_canpi.sh /etc/init.d
+sudo chmod +x /etc/init.d/start_canpi.sh
+sudo update-rc.d start_canpi.sh defaults
+
+The commands above make a copy of the script to the /etc/init.d, turns the script as an executable and tell the linux to run it on boot.
+Now you can
+
+sudo reboot
+
+Log again to check if the service is running.
+
+To see if it is running after reboot you can:
+sudo /etc/init.d/start_canpi.sh status
+
+or see the log in the canpi.log in the canpi project dir that you changed in the script above.
+
+If any error happen, we can see it in the file
+/var/log/start_canpi.sh.err
+
+To manual restart the service do
+sudo /etc/init.d/start_canpi.sh restart
+
+To manual stop
+sudo /etc/init.d/start_canpi.sh stop
+
+To manual start
+sudo /etc/init.d/start_canpi.sh start
+
+
+######## Install Bonjour #########
+Install avahi with the following commands on the Pi:
+sudo apt-get install avahi-daemon
+and then on older Debian installs:
+sudo update-rc.d avahi-daemon defaults
+or on newer Raspbian installs:
+sudo insserv avahi-daemon
+
+Create a configfile for Avahi at /etc/avahi/services/multiple.service. I did this with the following command:
+sudo pico /etc/avahi/services/multiple.service
+
+The contents of this for our actual pi configuration is
+
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+        <name replace-wildcards="yes">CANPI</name>
+        <service>
+                <type>_withrottle._tcp</type>
+                <port>5555</port>
+        </service>
+</service-group>
+
+Apply the new configuration with:
+sudo /etc/init.d/avahi-daemon restart
+
+The entry  <type>_withrottle._tcp</type> is specifically for the Engine Drive. After restarting the service you may see in the ED the entry CANPI 5555
+
+#### Virtual CAN ####
+sudo modprobe vcan
+sudo ip link add dev vcan0 type vcan
+sudo ip link set up vcan0
+
+
+####### GPIO Pins ######
+
+canpi Pin(BMC)     header pin   GPIO
+17                  11          0
+18                  12          1
+27                  13          2
+22                  15          3
+23                  16          4
+24                  18          5
+25                  22          6
+4                   7           7
