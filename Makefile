@@ -4,7 +4,7 @@ CFLAGS= -c -Wall -fpermissive -lm -std=c++11 -g -I/usr/local/include -I/usr/incl
 LDFLAGS= -L/usr/local/lib -L/usr/lib -Llib
 SOURCES=main.cpp canHandler.cpp tcpServer.cpp Client.cpp tcpClientGridConnect.cpp gpio.cpp nodeConfigurator.cpp frameCAN.cpp 
 OBJECTS=$(SOURCES:.cpp=.o)
-EXECUTABLE=canpi
+EXECUTABLE=canpiserver
 
 all: $(SOURCES) $(EXECUTABLE)
 
@@ -16,6 +16,6 @@ $(EXECUTABLE): $(OBJECTS)
 
 clean:
 	rm -f *.o
-	rm canpi
+	rm canpiserver
 before:
 	test -d obj || mkdir -p obj

@@ -1,5 +1,4 @@
 #include "tcpServer.h"
-#include "tcpClient.h"
 #include "tcpClientGridConnect.h"
 
 
