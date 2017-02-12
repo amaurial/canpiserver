@@ -38,7 +38,6 @@
 #include "canHandler.h"
 #include "Turnout.h"
 #include "nodeConfigurator.h"
-#include "sessionHandler.h"
 
 using namespace std;
 //using namespace libconfig;
@@ -148,40 +147,18 @@ int main()
         return 1;
     };
 
-    //load the turnout file
-    Turnout turnouts=Turnout(&logger);
-    if (file_exists(turnoutfile)){
-        turnouts.load(turnoutfile);
-    }
-
-    //start the session handler
-    sessionHandler session_handler = sessionHandler(&logger, config, &can);
-	session_handler.start();
-    //start the tcp server
-    tcpServer tcpserver = tcpServer(&logger, port, &can, &session_handler, CLIENT_TYPE::ED);
-    tcpserver.setTurnout(&turnouts);
-    tcpserver.setNodeConfigurator(config);
-    tcpserver.start();
-    can.setTcpServer(&tcpserver);
-
     //start the grid tcp server
-    tcpServer *gridserver;
-    if (start_grid_server){
-        tcpServer tcpserverGrid = tcpServer(&logger, gridport, &can, nullptr, CLIENT_TYPE::GRID);
-        tcpserverGrid.setNodeConfigurator(config);
-        tcpserverGrid.start();
-        can.setTcpServer(&tcpserverGrid);
-        gridserver = &tcpserverGrid;
-    }
+    tcpServer tcpserverGrid = tcpServer(&logger, gridport, &can, CLIENT_TYPE::GRID);
+    tcpserverGrid.setNodeConfigurator(config);
+    tcpserverGrid.start();
+    can.setTcpServer(&tcpserverGrid);
 
     //keep looping forever
     while (running == 1){usleep(1000000);};
 
     //finishes
-    logger.info("Stopping the tcp server");
-	session_handler.stop();
-    tcpserver.stop();
-    gridserver->stop();
+    logger.info("Stopping the grid tcp server");
+    tcpserverGrid.stop();
 
     logger.info("Stopping CBUS reader");
     can.stop();

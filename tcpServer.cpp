@@ -3,7 +3,7 @@
 #include "tcpClientGridConnect.h"
 
 
-tcpServer::tcpServer(log4cpp::Category *logger, int port, canHandler* can, sessionHandler *session_handler, CLIENT_TYPE clientType)
+tcpServer::tcpServer(log4cpp::Category *logger, int port, canHandler* can, CLIENT_TYPE clientType)
 {
     //ctor
     this->logger = logger;
@@ -11,7 +11,6 @@ tcpServer::tcpServer(log4cpp::Category *logger, int port, canHandler* can, sessi
     this->can = can;
     counter = 0;
     this->clientType = clientType;
-    this->session_handler = session_handler;
 }
 
 tcpServer::~tcpServer()
@@ -132,26 +131,16 @@ void tcpServer::run(void* param){
                 Client *cl;
                 if (clientType == GRID){
                     cl = new tcpClientGridConnect(logger,this,can,client_sock, client_addr,counter,config);
+                    cl->setIp(s);
+                    free(s);
+                    tempClient = cl;
+                    logger->debug("[tcpServer] Creating client thread %d",counter);
+                    pthread_t clientThread;
+                    pthread_create(&clientThread, nullptr, tcpServer::thread_entry_run_client, this);
+                    clients.insert(std::pair<int,Client*>(counter,cl));
+                    threads.push_back(clientThread);
+                    counter++;
                 }
-                else{
-                    tcpClient *client;
-                    client = new tcpClient(logger,this,can,client_sock, client_addr,counter,config,session_handler);
-                    if (clients.size() == 0){
-                        turnouts->reload();
-                    }
-                    client->setTurnout(turnouts);
-                    cl = client;
-                }
-
-                cl->setIp(s);
-                free(s);
-                tempClient = cl;
-                logger->debug("[tcpServer] Creating client thread %d",counter);
-                pthread_t clientThread;
-                pthread_create(&clientThread, nullptr, tcpServer::thread_entry_run_client, this);
-                clients.insert(std::pair<int,Client*>(counter,cl));
-                threads.push_back(clientThread);
-                counter++;
             }
         }
         catch(...){
@@ -203,10 +192,6 @@ void tcpServer::removeClient(Client *client){
     catch(...){
         logger->error("[tcpServer] Failed to remove a client");
     }
-}
-
-void tcpServer::setTurnout(Turnout* turnouts){
-    this->turnouts = turnouts;
 }
 
 void tcpServer::postMessageToAllClients(int clientId,int canid,char *msg,int msize,CLIENT_TYPE ct){
