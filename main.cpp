@@ -13,25 +13,25 @@
 #include <sys/stat.h>
 
 //logger
-#include "log4cpp/Portability.hh"
+#include <log4cpp/Portability.hh>
 #ifdef LOG4CPP_HAVE_UNISTD_H
 #include <unistd.h>
 #endif
 #include <iostream>
-#include "log4cpp/Category.hh"
-#include "log4cpp/Appender.hh"
-#include "log4cpp/FileAppender.hh"
-#include "log4cpp/RollingFileAppender.hh"
-#include "log4cpp/OstreamAppender.hh"
+#include <log4cpp/Category.hh>
+#include <log4cpp/Appender.hh>
+#include <log4cpp/FileAppender.hh>
+#include <log4cpp/RollingFileAppender.hh>
+#include <log4cpp/OstreamAppender.hh>
 #ifdef LOG4CPP_HAVE_SYSLOG
-#include "log4cpp/SyslogAppender.hh"
+#include <log4cpp/SyslogAppender.hh>
 #endif
-#include "log4cpp/Layout.hh"
-#include "log4cpp/BasicLayout.hh"
-#include "log4cpp/PatternLayout.hh"
-#include "log4cpp/SimpleLayout.hh"
-#include "log4cpp/Priority.hh"
-#include "log4cpp/NDC.hh"
+#include <log4cpp/Layout.hh>
+#include <log4cpp/BasicLayout.hh>
+#include <log4cpp/PatternLayout.hh>
+#include <log4cpp/SimpleLayout.hh>
+#include <log4cpp/Priority.hh>
+#include <log4cpp/NDC.hh>
 
 //project classes
 #include "utils.h"
@@ -64,11 +64,8 @@ int main()
     log4cpp::Priority::PriorityLevel loglevel = log4cpp::Priority::DEBUG;
     string logfile = "canpi.log";
     string configfile = "canpi.cfg";
-    string turnoutfile = "turnout.txt";
-    int port = 4444;
     string candevice = "can0";
     bool append = false;
-    bool start_grid_server = false;
     int gridport = 5555;
     int canid = 100;
     int pb_pin=4;
@@ -92,12 +89,9 @@ int main()
 
     logfile = config->getLogFile();
     candevice = config->getCanDevice();
-    port = config->getTcpPort();
     canid = config->getCanID();
     gridport = config->getcanGridPort();
     append = config->getLogAppend();
-    start_grid_server = config->isCanGridEnabled();
-    turnoutfile = config->getTurnoutFile();
     pb_pin = config->getPB();
     gled_pin = config->getGreenLed();
     yled_pin = config->getYellowLed();
@@ -130,8 +124,6 @@ int main()
     }
     logger.info("Logger initated");
 
-    config->printMemoryNVs();
-
     //start the CAN
     canHandler can = canHandler(&logger,canid);
     //set the configurator
@@ -139,6 +131,8 @@ int main()
     //set gpio pins
     can.setPins(pb_pin,gled_pin,yled_pin);
     can.setNodeNumber(node_number);
+
+
 
     //start the CAN threads
     if (can.start(candevice.c_str()) == -1 ){

@@ -299,7 +299,6 @@ byte nodeConfigurator::setNV(int idx,byte val){
 }
 
 void nodeConfigurator::loadParamsToMemory(){
-    cout << "Loading NVs to memory" << endl;
     loadParam1();
     loadParamsInt2Bytes(getTcpPort(), P_TCP_PORT);
     loadParamsInt2Bytes(getcanGridPort(), P_GRID_TCP_PORT);
@@ -317,11 +316,9 @@ void nodeConfigurator::loadParamsToMemory(){
 void nodeConfigurator::loadParam1(){
     byte p1 = 0;
     if (getAPMode()){
-        cout << "AP Mode set to true" << endl;
         p1 = 1;
     }
     if (isCanGridEnabled()){
-        cout << "Can grid set to true" << endl;
         p1 = p1 | 0b00000010;
     }
     string l = getLogLevel();
@@ -362,7 +359,7 @@ void nodeConfigurator::loadParamsInt2Bytes(int value, unsigned int idx){
     NV[idx+1] = Hb;
     NV[idx] = Lb;
 
-    cout << "P int " << value << " " << int(NV[idx]) << " " << int(NV[idx+1]) << endl;
+    //cout << "P int " << value << " " << int(NV[idx]) << " " << int(NV[idx+1]) << endl;
 }
 
 void nodeConfigurator::loadParamsString(string value, unsigned int idx, unsigned int maxsize){
@@ -375,7 +372,7 @@ void nodeConfigurator::loadParamsString(string value, unsigned int idx, unsigned
 
     for (i = 0;i < ssize; i++){
         NV[idx + i] = value.c_str()[i];
-        cout <<  NV[idx + i] << " ";
+        //cout <<  NV[idx + i] << " ";
     }
 
     //fill the rest with 0
@@ -384,7 +381,7 @@ void nodeConfigurator::loadParamsString(string value, unsigned int idx, unsigned
             NV[idx + i] = 0;
         }
     }
-    cout << endl;
+    //cout << endl;
 }
 
 
