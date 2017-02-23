@@ -1,34 +1,18 @@
 $def with (form, title,msg)
 
 $code:
-	id_apmode="apmode"
-        id_apmode_no_passwd="ap_no_password"
-	id_ssid="ap_ssid"
-	id_password="ap_password"
-	id_channel="ap_channel"
-	id_router_ssid="router_ssid"
-	id_router_password="router_password"
-	id_bonjour_name="service_name"
-	id_ed_tcpport="tcpport"
-	id_grid_enable="gridenable"
 	id_grid_port="cangrid_port"
 	id_logfile="logfile"
 	id_loglevel="loglevel"
 	id_logappend="logappend"
 	id_canid="canid"
-	id_turnout_file="turnout_file"
-	id_fns_momentary="fn_momentary"
         id_create_logfile="create_log_file"
         id_start_event_id="start_event_id"
 	id_btn_save="btnSave"
-	id_btn_apply="btnApply"
 	id_btn_restart="btnRestart"
         id_btn_stop="btnStop"
         id_btn_restart_all="btnRestartAll"
 	id_btn_update_file="btnUpdateFile"
-        id_orphan_timeout="orphan_timeout"
-        id_btn_shutdown="btnShutdown"
-        id_shutdown_code="shutdown_code"
 
 <!DOCTYPE html>
 <html lang="en">
@@ -44,42 +28,10 @@ $code:
 <body>
            <img src="/static/merg_logo.png" />      
 <div class="container-fluid">
-           <header><h3>CANPiWi 1.3 Configuration<br/></h3></header>
+           <header><h3>CANPiServer 1.0 Configuration<br/></h3></header>
            <header><h4>$msg<br/></h4></header>
   <div class="row-fluid">
            <form class="form" method="post"> 
-              $:form[id_btn_shutdown].render()              
-              <br><br>
-              $:form[id_apmode].description : 
-	      $:form[id_apmode].render()
-	      <br><br>
-              $:form[id_apmode_no_passwd].description : 
-	      $:form[id_apmode_no_passwd].render()
-	      <br><br>
-              $:form[id_ssid].description : 
-              $:form[id_ssid].render()
-	      <br>
-              $:form[id_password].description : 
-              $:form[id_password].render()
-	      <br>
-              Wifi channel : 
-              $:form[id_channel].render()
-	      <br>
-              $:form[id_router_ssid].description : 
-              $:form[id_router_ssid].render()
-	      <br>
-              $:form[id_router_password].description : 
-              $:form[id_router_password].render()
-	      <br>
-              $:form[id_bonjour_name].description : 
-              $:form[id_bonjour_name].render()
-	      <br>
-              $:form[id_grid_enable].description : 
-              $:form[id_grid_enable].render()
-              <br><br>
-              $:form[id_ed_tcpport].description : 
-              $:form[id_ed_tcpport].render()
-	      <br>
               $:form[id_grid_port].description : 
               $:form[id_grid_port].render()
 	      <br>
@@ -88,18 +40,6 @@ $code:
 	      <br>
               $:form[id_start_event_id].description : 
               $:form[id_start_event_id].render()
-              <br>
-              $:form[id_orphan_timeout].description :
-              $:form[id_orphan_timeout].render()
-              <br>
-              $:form[id_shutdown_code].description :
-              $:form[id_shutdown_code].render()
-	      <br>
-              $:form[id_turnout_file].description : 
-              $:form[id_turnout_file].render()
-	      <br>
-              $:form[id_fns_momentary].description : 
-              $:form[id_fns_momentary].render()
 	      <br>
               Log level : 
               $:form[id_loglevel].render()
@@ -117,8 +57,6 @@ $code:
 	      $:form[id_btn_stop].render()              
               <br><br>
 	      $:form[id_btn_restart_all].render()              
-              <br><br>
-	      $:form[id_btn_apply].render()
               <br><br>
 	      $:form[id_btn_update_file].render()
               <hr>
