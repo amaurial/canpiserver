@@ -837,21 +837,6 @@ void canHandler::handleCBUSEvents(frameCAN canframe){
 
         break;
     }
-    case OPC_ASON:
-    {
-        Lb = frame.data[4];
-        Hb = frame.data[3];
-        tnn = Hb;
-        tnn = (tnn << 8) | Lb;
-        logger->debug("[canHandler] Received set ASON %d", tnn);
-        if (tnn == config->getShutdownCode()){
-            logger->debug("[canHandler] Shuting down the node.");
-            restart_module(SHUTDOWN);
-            return;
-        }
-
-        break;
-    }
     case OPC_ENUM:
     {
         if (setup_mode) return;
