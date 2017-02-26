@@ -144,7 +144,7 @@ is_web_running() {
 
 kill_all_processes(){
     p="$1"
-    list=`ps -A -o pid,cmd |grep "$p" | grep -v color | grep -v start_canpiserver | cut -d " " -f 2`
+    list=`ps -A -o pid,cmd |grep "$p" | grep -v color | grep -v canpiserver | cut -d " " -f 2`
     for pid in $list;
     do
         echo "Killing process $pid"
@@ -337,7 +337,7 @@ copy_start_script_file(){
 
 upgrade_config_files(){
     cd "${upgradedir}"
-    copy_start_script_file start_canpi.sh
+    copy_start_script_file canpiserver.sh
 }
 
 clean_upgrade_files()
