@@ -122,6 +122,7 @@ int main()
         appender2->setLayout(layout2);
         logger.addAppender(appender2);
     }
+   
     logger.info("Logger initated");
 
     //start the CAN
