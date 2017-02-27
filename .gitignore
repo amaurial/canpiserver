@@ -1,4 +1,5 @@
 *.cbp
 *.layout
 *.o
+*.d
 lib/log4cpp/

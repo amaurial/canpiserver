@@ -62,6 +62,7 @@ void canHandler::setPins(int pbutton,int gledpin,int yledpin){
     pb.setdir_gpio("in");
     gl.setdir_gpio("out");
     yl.setdir_gpio("out");
+    usleep(500000);
     if (config->getNodeMode() == 0){
         logger->info("[canHandler] Node is in SLIM mode");
     	gl.setval_gpio("1");
