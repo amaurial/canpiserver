@@ -15,35 +15,11 @@
 
 
 /**
-1 byte
-apmode bit 1, enable can grid bit 2, log level bit 3,4
-
-2 bytes
-tcp port
-
 2 bytes
 grid tcp port
 
-1 byte
-wifi channel
-
-8 bytes
-ssid
-
-8 bytes
-ssid password
-
-12 bytes
-router ssid
-
-12 bytes
-router password
-
-8 bytes
-service name
-
-11 bytes
-turnout file name
+2 bytes 
+start event
 **/
 #define P1_SIZE 2    //grid tcp port
 #define P2_SIZE 2   //start event id
