@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 . /lib/lsb/init-functions
